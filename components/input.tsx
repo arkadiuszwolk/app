@@ -27,16 +27,7 @@ export function Input({ label, placeholder, className, value: valueProp, ...prop
                 {...props}
             />
 
-            <label
-                className={cn(
-                    'bg-white px-1 absolute left-3 transition-all pointer-events-none cursor-default',
-                    value || props.value
-                        ? 'top-0 -translate-y-1/2 text-xs text-gray-400'
-                        : 'top-1/2 -translate-y-1/2 text-gray-400 text-sm',
-                    'peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-black',
-                )}>
-                {label}
-            </label>
+            <label>{label}</label>
         </div>
     );
 }
