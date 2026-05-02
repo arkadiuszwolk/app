@@ -1,6 +1,6 @@
 'use client';
 
-import { PanInfo } from 'framer-motion';
+import { animate, PanInfo, useMotionValue } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
     startOfMonth,
@@ -14,7 +14,7 @@ import {
     isSameDay,
 } from 'date-fns';
 import { motion, useAnimation } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const MONTHS = [
     'Styczeń',
@@ -272,58 +272,122 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
     const [direction, setDirection] = useState<0 | 1 | -1>(0);
     const [isAnimating, setIsAnimating] = useState(false);
 
-    const controls = useAnimation();
+    // const controls = useAnimation();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [width, setWidth] = useState(0);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            setWidth(containerRef.current.offsetWidth);
+        }
+    }, []);
+
+    const x = useMotionValue(0);
+
+    useEffect(() => {
+        if (width) {
+            x.set(-width);
+        }
+    }, [width]);
+
+    useEffect(() => {
+        function handleResize() {
+            if (containerRef.current) {
+                setWidth(containerRef.current.offsetWidth);
+            }
+        }
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const prevMonthFirstDay = startOfMonth(addMonths(currentMonthFirstDay, -1));
     const nextMonthFirstDay = startOfMonth(addMonths(currentMonthFirstDay, 1));
 
-    async function prevMonth() {
-        if (isAnimating) return;
+    // async function prevMonth() {
+    //     if (isAnimating) return;
+    //     setIsAnimating(true);
+    //     setDirection(-1);
+    //     await controls.start({ x: '0%' }); // jedziemy w prawo
+    //     setCurrentMonthFirstDay(startOfMonth(addMonths(currentMonthFirstDay, -1)));
+    //     controls.set({ x: '-100%' }); // reset do środka
+    //     setIsAnimating(false);
+    // }
+
+    // async function nextMonth() {
+    //     if (isAnimating) return;
+    //     setIsAnimating(true);
+    //     setDirection(1);
+    //     await controls.start({ x: '-200%' }); // jedziemy w lewo
+    //     setCurrentMonthFirstDay(startOfMonth(addMonths(currentMonthFirstDay, 1)));
+    //     controls.set({ x: '-100%' }); // reset do środka
+    //     setIsAnimating(false);
+    // }
+
+    function prevMonth() {
+        if (isAnimating || !width) return;
+
         setIsAnimating(true);
-        setDirection(-1);
-        await controls.start({ x: '0%' }); // jedziemy w prawo
-        setCurrentMonthFirstDay(startOfMonth(addMonths(currentMonthFirstDay, -1)));
-        controls.set({ x: '-100%' }); // reset do środka
-        setIsAnimating(false);
+
+        animate(x, 0, {
+            type: 'spring',
+            stiffness: 300,
+            damping: 30,
+        }).then(() => {
+            setCurrentMonthFirstDay((prev) => startOfMonth(addMonths(prev, -1)));
+            x.set(-width);
+            setIsAnimating(false);
+        });
     }
 
-    async function nextMonth() {
-        if (isAnimating) return;
+    function nextMonth() {
+        if (isAnimating || !width) return;
+
         setIsAnimating(true);
-        setDirection(1);
-        await controls.start({ x: '-200%' }); // jedziemy w lewo
-        setCurrentMonthFirstDay(startOfMonth(addMonths(currentMonthFirstDay, 1)));
-        controls.set({ x: '-100%' }); // reset do środka
-        setIsAnimating(false);
+
+        animate(x, -2 * width, {
+            type: 'spring',
+            stiffness: 300,
+            damping: 30,
+        }).then(() => {
+            setCurrentMonthFirstDay((prev) => startOfMonth(addMonths(prev, 1)));
+            x.set(-width);
+            setIsAnimating(false);
+        });
     }
 
     function handleDragEnd(info: PanInfo) {
+        if (isAnimating) return;
+
         const offset = info.offset.x;
         const velocity = info.velocity.x;
 
-        const offsetThreshold = 80; // dystans
-        const velocityThreshold = 500; // prędkość (px/s)
+        const threshold = width * 0.2;
+        const velocityThreshold = 500;
 
-        // 👉 SWIPE W PRAWO (poprzedni miesiąc)
-        if (offset > offsetThreshold || velocity > velocityThreshold) {
-            prevMonth();
+        setIsAnimating(true);
+
+        if (offset > threshold || velocity > velocityThreshold) {
+            animate(x, 0, { type: 'spring', stiffness: 300, damping: 30 }).then(() => {
+                setCurrentMonthFirstDay((prev) => startOfMonth(addMonths(prev, -1)));
+                x.set(-width);
+                setIsAnimating(false);
+            });
             return;
         }
 
-        // 👉 SWIPE W LEWO (następny miesiąc)
-        if (offset < -offsetThreshold || velocity < -velocityThreshold) {
-            nextMonth();
+        if (offset < -threshold || velocity < -velocityThreshold) {
+            animate(x, -2 * width, { type: 'spring', stiffness: 300, damping: 30 }).then(() => {
+                setCurrentMonthFirstDay((prev) => startOfMonth(addMonths(prev, 1)));
+                x.set(-width);
+                setIsAnimating(false);
+            });
             return;
         }
 
-        // 👉 ZA MAŁY RUCH → WRACAMY DO ŚRODKA
-        controls.start({
-            x: '-100%',
-            transition: {
-                type: 'spring',
-                stiffness: 300,
-                damping: 30,
-            },
+        animate(x, -width, { type: 'spring', stiffness: 300, damping: 30 }).then(() => {
+            setIsAnimating(false);
         });
     }
 
@@ -332,6 +396,7 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
             <div className='w-full flex justify-between items-center mb-8 px-4'>
                 <button
                     onClick={prevMonth}
+                    // onClick={() => {}}
                     className='px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 hover:cursor-pointer'>
                     {'<'}
                 </button>
@@ -340,21 +405,23 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                 </h2>
                 <button
                     onClick={nextMonth}
+                    // onCanPlay={() => {}}
                     className='px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 hover:cursor-pointer'>
                     {'>'}
                 </button>
             </div>
             {/* WRAPPER DO ANIMOWANIA */}
-            <div className='w-full flex overflow-hidden'>
+            <div ref={containerRef} className='w-full flex overflow-hidden'>
                 <motion.div
                     className='flex w-[300%]'
-                    initial={{ x: '-100%' }}
-                    animate={controls}
+                    style={{ x }}
                     drag='x'
-                    dragConstraints={{ left: 0, right: 0 }}
+                    // dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.2}
                     dragMomentum={false}
-                    // drag={!isAnimating}
+                    onDragStart={() => {
+                        if (isAnimating) return false;
+                    }}
                     onDragEnd={(e, info) => handleDragEnd(info)}>
                     <div className='w-full shrink-0'>
                         <Month date={prevMonthFirstDay} selectDate={selectDate} />
