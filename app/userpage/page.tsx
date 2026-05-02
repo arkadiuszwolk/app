@@ -35,7 +35,7 @@ export default function Page() {
                 </p>
             </div> */}
                 <h2 className='text-center mb-10 w-full font-semibold text-blue-500 text-xl'>
-                    Wybierz datę
+                    Wybierz dzień
                 </h2>
                 <MiniCalendar selectDate={selectDate} />
                 {/* <div className='space-y-4'>
