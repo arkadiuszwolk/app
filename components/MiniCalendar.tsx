@@ -1,5 +1,6 @@
 'use client';
 
+import { PanInfo } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
     startOfMonth,
@@ -296,6 +297,36 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
         setIsAnimating(false);
     }
 
+    function handleDragEnd(info: PanInfo) {
+        const offset = info.offset.x;
+        const velocity = info.velocity.x;
+
+        const offsetThreshold = 80; // dystans
+        const velocityThreshold = 500; // prędkość (px/s)
+
+        // 👉 SWIPE W PRAWO (poprzedni miesiąc)
+        if (offset > offsetThreshold || velocity > velocityThreshold) {
+            prevMonth();
+            return;
+        }
+
+        // 👉 SWIPE W LEWO (następny miesiąc)
+        if (offset < -offsetThreshold || velocity < -velocityThreshold) {
+            nextMonth();
+            return;
+        }
+
+        // 👉 ZA MAŁY RUCH → WRACAMY DO ŚRODKA
+        controls.start({
+            x: '-100%',
+            transition: {
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+            },
+        });
+    }
+
     return (
         <div className='w-full sm:w-100 select-none'>
             <div className='w-full flex justify-between items-center mb-8 px-4'>
@@ -319,7 +350,12 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                     className='flex w-[300%]'
                     initial={{ x: '-100%' }}
                     animate={controls}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}>
+                    drag='x'
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2}
+                    dragMomentum={false}
+                    // drag={!isAnimating}
+                    onDragEnd={(e, info) => handleDragEnd(info)}>
                     <div className='w-full shrink-0'>
                         <Month date={prevMonthFirstDay} selectDate={selectDate} />
                     </div>
