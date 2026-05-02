@@ -237,7 +237,7 @@ function Month({ date, selectDate }: { date: Date; selectDate: (date: Date) => v
                     </div>
                 ))}
             </div>
-            <div className='grid grid-cols-7 w-full'>
+            <div className='grid grid-cols-7 w-full gap-x-1 gap-y-2'>
                 {month.map((d, i) => {
                     if (d != null && isDateInArray(d, selectableDates)) {
                         return (
@@ -302,7 +302,7 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                 <button
                     onClick={prevMonth}
                     className='px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 hover:cursor-pointer'>
-                    ⭠
+                    {'<'}
                 </button>
                 <h2 className='w-full text-center'>
                     {MONTHS[getMonth(currentMonthFirstDay)]} {getYear(currentMonthFirstDay)}
@@ -310,7 +310,7 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                 <button
                     onClick={nextMonth}
                     className='px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 hover:cursor-pointer'>
-                    ⭢
+                    {'>'}
                 </button>
             </div>
             {/* WRAPPER DO ANIMOWANIA */}

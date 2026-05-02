@@ -25,7 +25,7 @@ export default function Page() {
     return (
         <div>
             <Steps />
-            <div className='flex flex-col justify-center items-center pt-10 px-6 md:px-30'>
+            <div className='flex flex-col justify-center items-center pt-2 px-6 md:px-30'>
                 {/* <div className='w-90'>
                 <h1 className='mb-4 text-center'>Arkadiusz Wołk</h1>
                 <p className='text-center'>
