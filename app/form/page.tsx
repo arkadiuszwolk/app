@@ -41,14 +41,14 @@ export default function Page() {
                     <input
                         type='text'
                         placeholder='Imię'
-                        className='w-70 px-4 py-2 bg-gray-100 rounded-xl'
+                        className='w-80 px-4 py-2 bg-gray-100 rounded-xl'
                     />
                     <input
                         type='text'
                         placeholder='Nazwisko'
-                        className='w-70 px-4 py-2 bg-gray-100 rounded-xl'
+                        className='w-80 px-4 py-2 bg-gray-100 rounded-xl'
                     />
-                    <div className='w-70 bg-gray-100 rounded-xl flex items-stretch'>
+                    <div className='w-80 bg-gray-100 rounded-xl flex items-stretch'>
                         <span className='bg-gray-200 px-4 rounded-l-xl flex justify-center items-center'>
                             +48
                         </span>
@@ -60,7 +60,7 @@ export default function Page() {
                     </div>
                     <textarea
                         placeholder='Twoje uwagi do wizyty'
-                        className='w-70 min-h-30 rounded-xl bg-gray-100 p-4'
+                        className='w-80 min-h-30 rounded-xl bg-gray-100 p-4'
                     />
                     <div className='space-x-2 mt-8'>
                         <input
