@@ -3,6 +3,7 @@
 import { GlobeIcon } from '@/components/icons/globe-icon';
 import { MiniCalendar } from '@/components/MiniCalendar';
 import { Steps } from '@/components/steps';
+import Link from 'next/link';
 import { useState } from 'react';
 
 function HourBox({ hour }: { hour: string }) {
@@ -38,41 +39,15 @@ export default function Page() {
                     Wybierz godzinę
                 </h2>
                 <ul>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            8:45
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            9:00
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            10:30
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            10:45
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            12:00
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            12:30
-                        </button>
-                    </li>
-                    <li>
-                        <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
-                            14:15
-                        </button>
-                    </li>
+                    {['8:45', '9:00', '10:30', '10:45', '12:00', '12:30', '14:15'].map((hour) => (
+                        <li key={hour}>
+                            <Link href='/form'>
+                                <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
+                                    {hour}
+                                </button>
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
                 <div className='flex items-center space-x-2 mt-6'>
                     {/* <div className='rounded-full w-8 h-8 bg-gray-500'></div> */}
