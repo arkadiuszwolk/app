@@ -31,11 +31,6 @@ const MONTHS = [
     'Grudzień',
 ];
 
-const buttonVariants = {
-    rest: { scale: 1 },
-    pressed: { scale: 0.5 },
-};
-
 function createMonth(date: Date) {
     const firstDay = startOfMonth(date);
     const lastDay = endOfMonth(date);
@@ -234,6 +229,11 @@ function Month({ date, selectDate }: { date: Date; selectDate: (date: Date) => v
         new Date(2026, 11, 31),
     ];
 
+    const buttonVariants = {
+        rest: { scale: 1 },
+        pressed: { scale: 0.5 },
+    };
+
     return (
         <div className='w-full'>
             <div className='grid grid-cols-7 w-full'>
@@ -249,7 +249,7 @@ function Month({ date, selectDate }: { date: Date; selectDate: (date: Date) => v
                         return (
                             <motion.button
                                 // initial={{ scale: 1 }}
-                                animate={{ scale: 1 }}
+                                // animate={{ scale: 1 }}
                                 // whileTap={{ scale: 0.5 }}
                                 // onClick={() => {
                                 //     selectDate(d);
@@ -258,6 +258,7 @@ function Month({ date, selectDate }: { date: Date; selectDate: (date: Date) => v
                                 variants={buttonVariants}
                                 initial='rest'
                                 whileTap='pressed'
+                                onTapCancel={() => {}}
                                 propagate={{ tap: false }}
                                 onTap={() => {
                                     if (d) {
@@ -442,7 +443,6 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                     onDragStart={() => {
                         if (isAnimating) return false;
                     }}
-                    variants={buttonVariants}
                     onDragEnd={(e, info) => handleDragEnd(info)}>
                     <div className='w-full shrink-0'>
                         <Month date={prevMonthFirstDay} selectDate={selectDate} />
