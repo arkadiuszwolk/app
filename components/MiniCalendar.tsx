@@ -1,6 +1,6 @@
 'use client';
 
-import { animate, PanInfo, useMotionValue } from 'framer-motion';
+import { animate, PanInfo, scale, useMotionValue } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import {
     startOfMonth,
@@ -30,6 +30,11 @@ const MONTHS = [
     'Listopad',
     'Grudzień',
 ];
+
+const buttonVariants = {
+    rest: { scale: 1 },
+    pressed: { scale: 0.5 },
+};
 
 function createMonth(date: Date) {
     const firstDay = startOfMonth(date);
@@ -242,15 +247,30 @@ function Month({ date, selectDate }: { date: Date; selectDate: (date: Date) => v
                 {month.map((d, i) => {
                     if (d != null && isDateInArray(d, selectableDates)) {
                         return (
-                            <button
-                                onClick={() => {
-                                    selectDate(d);
-                                    router.push('/time');
+                            <motion.button
+                                // initial={{ scale: 1 }}
+                                animate={{ scale: 1 }}
+                                // whileTap={{ scale: 0.5 }}
+                                // onClick={() => {
+                                //     selectDate(d);
+                                //     router.push('/time');
+                                // }}
+                                variants={buttonVariants}
+                                initial='rest'
+                                whileTap='pressed'
+                                propagate={{ tap: false }}
+                                onTap={() => {
+                                    if (d) {
+                                        selectDate(d);
+                                        router.push('/time');
+                                    }
                                 }}
+                                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                                dragListener={false}
                                 key={d ? d.toISOString() : `empty-${i}`}
                                 className='aspect-square flex justify-center items-center bg-blue-50 text-blue-500 hover:cursor-pointer hover:bg-blue-200 rounded-full'>
                                 {d && getDate(d)}
-                            </button>
+                            </motion.button>
                         );
                     } else {
                         return (
@@ -422,6 +442,7 @@ export function MiniCalendar({ selectDate }: { selectDate: (date: Date) => void 
                     onDragStart={() => {
                         if (isAnimating) return false;
                     }}
+                    variants={buttonVariants}
                     onDragEnd={(e, info) => handleDragEnd(info)}>
                     <div className='w-full shrink-0'>
                         <Month date={prevMonthFirstDay} selectDate={selectDate} />

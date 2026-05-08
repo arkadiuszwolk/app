@@ -5,6 +5,7 @@ import { MiniCalendar } from '@/components/MiniCalendar';
 import { Steps } from '@/components/steps';
 import Link from 'next/link';
 import { useState } from 'react';
+import { motion, scale } from 'framer-motion';
 
 function HourBox({ hour }: { hour: string }) {
     return (
@@ -42,9 +43,11 @@ export default function Page() {
                     {['8:45', '9:00', '10:30', '10:45', '12:00', '12:30', '14:15'].map((hour) => (
                         <li key={hour}>
                             <Link href='/form'>
-                                <button className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
+                                <motion.button
+                                    whileTap={{ scale: 0.95 }}
+                                    className='bg-blue-50 rounded-xl text-blue-500 w-50 h-12 mb-4'>
                                     {hour}
-                                </button>
+                                </motion.button>
                             </Link>
                         </li>
                     ))}
