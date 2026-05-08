@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion, Transition, Variants } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DatePickerView } from './views/DatePickerView';
 import TimePickerView from './views/TimePickerView';
 import { FormView } from './views/FormView';
@@ -9,21 +9,32 @@ import { HomeView } from './views/HomeView';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function CompanyPage() {
-    // const [step, setStep] = useState(1);
-    const [direction, setDirection] = useState(1);
+    const [pStep, setPStep] = useState(1);
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const step = Number(searchParams.get('step')) || 1;
+    // 1. Używamy Refa zamiast useState dla poprzedniego kroku
+    const prevStepRef = useRef(step);
+
+    // 2. Obliczamy kierunek na podstawie Refa (Ref jeszcze trzyma "starą" wartość)
+    const direction = step >= prevStepRef.current ? 1 : -1;
+
+    // 3. Aktualizujemy Refa PO wyrenderowaniu (w useEffect)
+    useEffect(() => {
+        prevStepRef.current = step;
+    }, [step]);
+
+    console.log(`Poprzedni: ${pStep} | Następny: ${step} | Kierunek: ${direction}`);
 
     const nextStep = () => {
-        setDirection(1);
+        // setDirection(1);
         router.push(`?step=${step + 1}`, { scroll: false });
     };
 
     const prevStep = () => {
-        setDirection(-1);
+        // setDirection(-1);
         router.push(`?step=${step - 1}`, { scroll: false });
     };
 
