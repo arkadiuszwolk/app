@@ -6,19 +6,25 @@ import { DatePickerView } from './views/DatePickerView';
 import TimePickerView from './views/TimePickerView';
 import { FormView } from './views/FormView';
 import { HomeView } from './views/HomeView';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function CompanyPage() {
-    const [step, setStep] = useState(1);
+    // const [step, setStep] = useState(1);
     const [direction, setDirection] = useState(1);
+
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const step = Number(searchParams.get('step')) || 1;
 
     const nextStep = () => {
         setDirection(1);
-        setStep(step + 1);
+        router.push(`?step=${step + 1}`, { scroll: false });
     };
 
     const prevStep = () => {
         setDirection(-1);
-        setStep(step - 1);
+        router.push(`?step=${step - 1}`, { scroll: false });
     };
 
     const transition: Transition = {
@@ -71,18 +77,12 @@ export default function CompanyPage() {
                     {step === 4 && views.form}
                     <div className='flex space-x-4'>
                         <button
-                            onClick={() => {
-                                setDirection(-1);
-                                setStep((prev) => prev - 1);
-                            }}
+                            onClick={prevStep}
                             className='w-24 px-4 py-2 rounded-xl bg-amber-900 text-white'>
                             LEWO
                         </button>
                         <button
-                            onClick={() => {
-                                setDirection(1);
-                                setStep((prev) => prev + 1);
-                            }}
+                            onClick={nextStep}
                             className='w-24 px-4 py-2 rounded-xl bg-amber-900 text-white'>
                             PRAWO
                         </button>
