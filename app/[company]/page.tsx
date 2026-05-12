@@ -73,7 +73,7 @@ export default function CompanyPage() {
     };
 
     return (
-        <div className='w-screen h-screen relative overflow-hidden flex flex-col'>
+        <div className='w-screen h-dvh relative overflow-hidden flex flex-col'>
             <Breadcrumbs />
             <AnimatePresence initial={false} mode='popLayout' custom={direction}>
                 <motion.div
@@ -83,7 +83,7 @@ export default function CompanyPage() {
                     initial='enter'
                     animate='center'
                     exit='exit'
-                    className='w-full h-dvh flex flex-col justify-center items-center p-8 overflow-y-scroll'>
+                    className='w-full h-full flex flex-col justify-center items-center p-8 overflow-y-scroll'>
                     <p>Strona {step}</p>
                     {step === 1 && views.home}
                     {step === 2 && views.datePicker}
