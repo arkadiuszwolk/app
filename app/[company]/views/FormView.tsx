@@ -57,14 +57,6 @@ export function FormView() {
                         Potwierdzam rezerwację
                     </button>
                 </form>
-                <div className='flex items-center space-x-2 mt-15'>
-                    {/* <div className='rounded-full w-8 h-8 bg-gray-500'></div> */}
-                    <GlobeIcon />
-                    <div className='flex flex-col text-gray-600'>
-                        <span className='text-xs'>Strefa czasowa</span>
-                        <span className='text-sm'>Europe/Warsaw</span>
-                    </div>
-                </div>
             </div>
         </div>
     );

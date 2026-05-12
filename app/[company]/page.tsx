@@ -7,6 +7,8 @@ import TimePickerView from './views/TimePickerView';
 import { FormView } from './views/FormView';
 import { HomeView } from './views/HomeView';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { TimeZone } from './components/TimeZone';
+import { Breadcrumbs } from './components/Breadcrumbs';
 
 export default function CompanyPage() {
     const [pStep, setPStep] = useState(1);
@@ -71,7 +73,8 @@ export default function CompanyPage() {
     };
 
     return (
-        <div className='w-screen h-screen relative overflow-hidden'>
+        <div className='w-screen h-screen relative overflow-hidden flex flex-col'>
+            <Breadcrumbs />
             <AnimatePresence initial={false} mode='popLayout' custom={direction}>
                 <motion.div
                     key={step} // Zmiana klucza wyzwala animację
@@ -80,7 +83,7 @@ export default function CompanyPage() {
                     initial='enter'
                     animate='center'
                     exit='exit'
-                    className='w-full h-full flex flex-col justify-center items-center p-8'>
+                    className='w-full h-full flex flex-col justify-center items-center p-8 overflow-y-scroll'>
                     <p>Strona {step}</p>
                     {step === 1 && views.home}
                     {step === 2 && views.datePicker}
@@ -100,6 +103,7 @@ export default function CompanyPage() {
                     </div>
                 </motion.div>
             </AnimatePresence>
+            <TimeZone />
         </div>
     );
 }
