@@ -48,7 +48,7 @@ export default function Page() {
                         initial='initial'
                         animate='animate'
                         exit='exit'
-                        className='w-full h-full overflow-hidden absolute inset-0 p-4'>
+                        className='w-full h-full overflow-y-scroll absolute inset-0 p-4'>
                         <div className='flex flex-col justify-center items-center'>
                             {step == 1 && <DatePickerView />}
                             {step == 2 && <TimePickerView />}
