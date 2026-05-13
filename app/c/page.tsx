@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion, Transition, Variants } from 'framer-motion';
 import { useState } from 'react';
-import { MiniCalendar } from './views/DatePickerView';
+import { DatePickerView } from './views/DatePickerView';
+import { TimePickerView } from './views/TimePickerView';
 
 export default function Page() {
     const [step, setStep] = useState(1);
@@ -47,8 +48,8 @@ export default function Page() {
                         exit='exit'
                         className='w-full h-full overflow-hidden absolute inset-0 p-4'>
                         <div className='flex flex-col justify-center items-center'>
-                            <h2 className='mb-12 mt-8'>Strona {step}</h2>
-                            <MiniCalendar />
+                            {step == 1 && <DatePickerView />}
+                            {step == 2 && <TimePickerView />}
                             <div className='flex space-x-4'>
                                 <button
                                     onClick={() => {
