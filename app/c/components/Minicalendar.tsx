@@ -75,7 +75,7 @@ function createMonth(date: Date) {
     return month;
 }
 
-function Month({ date }: { date: Date }) {
+function Month({ date, nextStep }: { date: Date; nextStep: () => void }) {
     date = startOfMonth(date);
     const month = createMonth(date);
 
@@ -96,6 +96,10 @@ function Month({ date }: { date: Date }) {
                         return (
                             <motion.button
                                 key={d.toISOString()}
+                                onClick={() => {
+                                    console.log(nextStep);
+                                    nextStep();
+                                }}
                                 className='flex justify-center items-center aspect-square text-gray-500'>
                                 {getDate(d)}
                             </motion.button>
@@ -114,7 +118,7 @@ function Month({ date }: { date: Date }) {
     );
 }
 
-export function MiniCalendar() {
+export function MiniCalendar({ nextStep }: { nextStep: () => void }) {
     const [currentMonthFirstDay, setCurrentMonthFirstDay] = useState(startOfMonth(new Date()));
     const [direction, setDirection] = useState(1);
 
@@ -174,7 +178,7 @@ export function MiniCalendar() {
                     }}
                     style={{ touchAction: 'pan-y' }}
                     className='w-full cursor-grab active:cursor-grabbing'>
-                    <Month date={currentMonthFirstDay} />
+                    <Month date={currentMonthFirstDay} nextStep={nextStep} />
                 </motion.div>
             </AnimatePresence>
         </div>

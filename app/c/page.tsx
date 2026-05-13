@@ -36,8 +36,12 @@ export default function Page() {
         }),
     };
 
+    function nextStep() {
+        setStep((prev) => prev + 1);
+    }
+
     return (
-        <div className='w-full h-dvh overflow-hidden bg-gray-50 flex flex-col'>
+        <div className='w-full h-dvh overflow-hidden bg-white flex flex-col'>
             <ProgressSummary />
             <main className='relative overflow-hidden flex-1'>
                 <AnimatePresence initial={false} mode='popLayout' custom={direction}>
@@ -48,11 +52,11 @@ export default function Page() {
                         initial='initial'
                         animate='animate'
                         exit='exit'
-                        className='w-full h-full overflow-y-scroll absolute inset-0 p-4'>
-                        <div className='flex flex-col justify-center items-center'>
-                            {step == 1 && <DatePickerView />}
-                            {step == 2 && <TimePickerView />}
-                            <div className='flex space-x-4'>
+                        className='w-full h-full overflow-hidden absolute inset-0 p-4'>
+                        <div className='w-full h-full flex flex-col justify-baseline items-center'>
+                            {step == 1 && <DatePickerView nextStep={nextStep} />}
+                            {step == 2 && <TimePickerView nextStep={nextStep} />}
+                            {/* <div className='flex space-x-4'>
                                 <button
                                     onClick={() => {
                                         setDirection(-1);
@@ -69,7 +73,7 @@ export default function Page() {
                                     className='px-4 py-2 rounded-full bg-gray-300 hover:cursor-pointer'>
                                     {'>'}
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </motion.div>
                 </AnimatePresence>
