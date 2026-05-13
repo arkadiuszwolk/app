@@ -4,6 +4,8 @@ import { AnimatePresence, motion, Transition, Variants } from 'framer-motion';
 import { useState } from 'react';
 import { DatePickerView } from './views/DatePickerView';
 import { TimePickerView } from './views/TimePickerView';
+import { TimeZoneInfo } from './components/TimeZoneInfo';
+import { ProgressSummary } from './components/ProgressSummary';
 
 export default function Page() {
     const [step, setStep] = useState(1);
@@ -36,7 +38,7 @@ export default function Page() {
 
     return (
         <div className='w-full h-dvh overflow-hidden bg-gray-50 flex flex-col'>
-            <div className='w-full h-16 flex justify-center items-center border-b'>Breadcrumbs</div>
+            <ProgressSummary />
             <main className='relative overflow-hidden flex-1'>
                 <AnimatePresence initial={false} mode='popLayout' custom={direction}>
                     <motion.div
@@ -72,7 +74,7 @@ export default function Page() {
                     </motion.div>
                 </AnimatePresence>
             </main>
-            <div className='w-full h-16 flex justify-center items-center border-t'>TimeZone</div>
+            <TimeZoneInfo />
         </div>
     );
 }
