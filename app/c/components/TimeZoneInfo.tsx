@@ -2,7 +2,7 @@ import { GlobeIcon } from '@/components/icons/globe-icon';
 
 export function TimeZoneInfo() {
     return (
-        <div className='bg-gray-50 w-full h-20 flex items-center space-x-2 py-6 justify-center'>
+        <div className='w-full h-20 flex items-center space-x-2 py-6 justify-center'>
             <GlobeIcon />
             <div className='flex flex-col text-gray-600'>
                 <span className='text-xs'>Strefa czasowa</span>
