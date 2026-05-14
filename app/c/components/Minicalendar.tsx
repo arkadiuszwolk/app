@@ -75,7 +75,7 @@ function createMonth(date: Date) {
     return month;
 }
 
-function Month({ date, nextStep }: { date: Date; nextStep: () => void }) {
+function Month({ date, nextStep }: { date: Date; nextStep: (selectedDate: Date) => void }) {
     date = startOfMonth(date);
     const month = createMonth(date);
 
@@ -98,7 +98,7 @@ function Month({ date, nextStep }: { date: Date; nextStep: () => void }) {
                                 key={d.toISOString()}
                                 onClick={() => {
                                     console.log(nextStep);
-                                    nextStep();
+                                    nextStep(d);
                                 }}
                                 className='flex justify-center items-center aspect-square text-gray-500'>
                                 {getDate(d)}
@@ -118,7 +118,7 @@ function Month({ date, nextStep }: { date: Date; nextStep: () => void }) {
     );
 }
 
-export function MiniCalendar({ nextStep }: { nextStep: () => void }) {
+export function MiniCalendar({ nextStep }: { nextStep: (date: Date) => void }) {
     const [currentMonthFirstDay, setCurrentMonthFirstDay] = useState(startOfMonth(new Date()));
     const [direction, setDirection] = useState(1);
 

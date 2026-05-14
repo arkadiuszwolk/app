@@ -1,6 +1,14 @@
+import { useBookingStore } from '@/store/useBookingStore';
 import { MiniCalendar } from '../components/Minicalendar';
 
 export function TimePickerView({ nextStep }: { nextStep: () => void }) {
+    const setTime = useBookingStore((state) => state.setTime);
+
+    const handleSelect = (h: string) => {
+        setTime(h); // 2. Zapisujemy wybraną godzinę w Zustandzie
+        nextStep(); // 3. Dopiero teraz idziemy dalej
+    };
+
     return (
         <div className='w-full h-full flex flex-col'>
             <h2 className='font-semibold text-xl text-blue-600 mt-10 mb-10 text-center'>
@@ -11,7 +19,7 @@ export function TimePickerView({ nextStep }: { nextStep: () => void }) {
                 {['8:45', '9:00', '10:30', '10:45', '12:00', '12:30', '14:15', '15:00'].map((h) => (
                     <li className='w-full flex justify-center'>
                         <button
-                            onClick={nextStep}
+                            onClick={() => handleSelect(h)}
                             className='w-60 px-6 py-4 bg-blue-100 text-blue-500 rounded-xl'>
                             {h}
                         </button>

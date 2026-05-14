@@ -7,6 +7,7 @@ import { TimePickerView } from './views/TimePickerView';
 import { TimeZoneInfo } from './components/TimeZoneInfo';
 import { ProgressSummary } from './components/ProgressSummary';
 import { FormView } from './views/FormView';
+import { SuccessView } from './views/SuccessView';
 
 export default function Page() {
     const [step, setStep] = useState(1);
@@ -42,7 +43,7 @@ export default function Page() {
     }
 
     return (
-        <div className='w-full h-dvh overflow-hidden bg-white flex flex-col'>
+        <div className='w-full h-dvh overflow-hidden bg-white flex flex-col md:w-80 md:mx-auto'>
             <ProgressSummary />
             <main className='relative overflow-hidden flex-1'>
                 <AnimatePresence initial={false} mode='popLayout' custom={direction}>
@@ -57,7 +58,8 @@ export default function Page() {
                         <div className='w-full h-full flex flex-col justify-baseline items-center'>
                             {step == 1 && <DatePickerView nextStep={nextStep} />}
                             {step == 2 && <TimePickerView nextStep={nextStep} />}
-                            {step == 3 && <FormView onComplete={() => {}} />}
+                            {step == 3 && <FormView nextStep={nextStep} />}
+                            {step == 4 && <SuccessView />}
                             {/* <div className='flex space-x-4'>
                                 <button
                                     onClick={() => {
