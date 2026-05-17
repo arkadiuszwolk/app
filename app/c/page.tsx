@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion, Transition, Variants } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DatePickerView } from './views/DatePickerView';
 import { TimePickerView } from './views/TimePickerView';
 import { TimeZoneInfo } from './components/TimeZoneInfo';
@@ -12,6 +12,29 @@ import { SuccessView } from './views/SuccessView';
 export default function Page() {
     const [step, setStep] = useState(1);
     const [direction, setDirection] = useState(1);
+
+    const getInitialStep = () => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            return Number(params.get('step')) || 1;
+        }
+        return 1;
+    };
+
+    useEffect(() => {
+        const handlePopState = () => {
+            const params = new URLSearchParams(window.location.search);
+            const stepFromUrl = Number(params.get('step')) || 1;
+
+            if (stepFromUrl !== step) {
+                setDirection(stepFromUrl > step ? 1 : -1);
+                setStep(stepFromUrl);
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [step]);
 
     const transition: Transition = {
         type: 'tween',
@@ -39,7 +62,10 @@ export default function Page() {
     };
 
     function nextStep() {
-        setStep((prev) => prev + 1);
+        setDirection(1);
+        const next = step + 1;
+        setStep(next);
+        window.history.pushState({ step: next }, '', `?step=${next}`);
     }
 
     return (
