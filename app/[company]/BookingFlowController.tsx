@@ -8,18 +8,44 @@ import { TimeZoneInfo } from './components/TimeZoneInfo';
 import { ProgressSummary } from './components/ProgressSummary';
 import { FormView } from './views/FormView';
 import { SuccessView } from './views/SuccessView';
+import ProfileView from './views/ProfileView';
+import { useBookingStore } from '@/store/useBookingStore';
 
-export default function Page() {
-    const [step, setStep] = useState(1);
-    const [direction, setDirection] = useState(1);
+interface Service {
+    id: string;
+    name: string;
+    duration: number;
+    price: number;
+}
 
-    const getInitialStep = () => {
+interface BookingFlowControllerProps {
+    company: { id: string; company_name: string; slug: string; capacity: number };
+    services: Service[];
+}
+
+export function BookingFlowController({ company, services }: BookingFlowControllerProps) {
+    // Inicjalizujemy krok początkowy bezpośrednio z funkcji sprawdzającej URL
+    const [step, setStep] = useState(() => {
         if (typeof window !== 'undefined') {
             const params = new URLSearchParams(window.location.search);
             return Number(params.get('step')) || 1;
         }
         return 1;
-    };
+    });
+    const [direction, setDirection] = useState(1);
+
+    // Pobieramy akcje ze stora Zustand
+    const setCompanyId = useBookingStore((state) => state.setCompanyId);
+    const setService = useBookingStore((state) => state.setService);
+    const reset = useBookingStore((state) => state.reset);
+
+    // KLUCZOWY DODATEK: Zapisujemy ID firmy w Zustandzie od razu po wejściu na stronę
+    useEffect(() => {
+        reset(); // Czyścimy pamięć podręczną ze starych wyborów
+        if (company?.id) {
+            setCompanyId(company.id);
+        }
+    }, [company?.id, setCompanyId, reset]);
 
     useEffect(() => {
         const handlePopState = () => {
@@ -68,6 +94,18 @@ export default function Page() {
         window.history.pushState({ step: next }, '', `?step=${next}`);
     }
 
+    const handleServiceSelect = (service: Service) => {
+        if (setService) {
+            setService({
+                id: service.id,
+                name: service.name,
+                price: service.price,
+                duration: service.duration,
+            });
+        }
+        nextStep(); // Przechodzimy do kroku 2 (DatePickerView)
+    };
+
     return (
         <div className='w-full h-dvh overflow-hidden bg-white flex flex-col md:w-80 md:mx-auto'>
             <ProgressSummary />
@@ -82,28 +120,17 @@ export default function Page() {
                         exit='exit'
                         className='w-full h-full overflow-hidden absolute inset-0 p-4'>
                         <div className='w-full h-full flex flex-col justify-baseline items-center'>
-                            {step == 1 && <DatePickerView nextStep={nextStep} />}
-                            {step == 2 && <TimePickerView nextStep={nextStep} />}
-                            {step == 3 && <FormView nextStep={nextStep} />}
-                            {step == 4 && <SuccessView />}
-                            {/* <div className='flex space-x-4'>
-                                <button
-                                    onClick={() => {
-                                        setDirection(-1);
-                                        setStep((prev) => prev - 1);
-                                    }}
-                                    className='px-4 py-2 rounded-full bg-gray-300 hover:cursor-pointer'>
-                                    {'<'}
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setDirection(1);
-                                        setStep((prev) => prev + 1);
-                                    }}
-                                    className='px-4 py-2 rounded-full bg-gray-300 hover:cursor-pointer'>
-                                    {'>'}
-                                </button>
-                            </div> */}
+                            {step === 1 && (
+                                <ProfileView
+                                    company={company}
+                                    services={services}
+                                    onSelectService={handleServiceSelect}
+                                />
+                            )}
+                            {step === 2 && <DatePickerView nextStep={nextStep} />}
+                            {step === 3 && <TimePickerView nextStep={nextStep} />}
+                            {step === 4 && <FormView nextStep={nextStep} />}
+                            {step === 5 && <SuccessView />}
                         </div>
                     </motion.div>
                 </AnimatePresence>

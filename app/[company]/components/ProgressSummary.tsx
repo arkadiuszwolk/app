@@ -4,7 +4,8 @@ import { useBookingStore } from '@/store/useBookingStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function ProgressSummary() {
-    const { date, time } = useBookingStore();
+    // Pobieramy aktualnie wybraną usługę, datę oraz godzinę ze stora
+    const { service, date, time } = useBookingStore();
 
     return (
         <div className='w-full flex flex-col py-6 items-center border-b border-gray-50 bg-white/80 backdrop-blur-md sticky top-0 z-20'>
@@ -12,12 +13,22 @@ export function ProgressSummary() {
                 Twoja wizyta
             </span>
 
-            <h3 className='text-sm font-medium text-gray-900'>
-                Strzyżenie męskie <span className='text-gray-300 mx-2'>•</span> 30 min{' '}
-                <span className='text-gray-300 mx-2'>•</span> 120 PLN
-            </h3>
+            {/* Dynamiczne wyświetlanie danych wybranej usługi */}
+            {service ? (
+                <h3 className='text-sm font-medium text-gray-900'>
+                    {service.name}
+                    <span className='text-gray-300 mx-2'>•</span>
+                    {service.duration} min
+                    <span className='text-gray-300 mx-2'>•</span>
+                    {service.price} PLN
+                </h3>
+            ) : (
+                <h3 className='text-sm font-medium text-gray-400 italic'>
+                    Nie wybrano jeszcze usługi
+                </h3>
+            )}
 
-            {/* Kontener dla animowanych danych */}
+            {/* Kontener dla animowanych danych (Data i Godzina) */}
             <div className='flex items-center gap-2 mt-1 text-sm text-gray-500 min-h-5'>
                 <AnimatePresence mode='wait'>
                     {/* Animacja Daty */}
