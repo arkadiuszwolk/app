@@ -55,7 +55,7 @@ export default function OwnerDashboardLayout({ children }: { children: React.Rea
             badgeValue: MOCK_BADGES.team,
         },
         { name: 'Oferta', href: '/dash/oferta', icon: 'fa-tags', badgeValue: MOCK_BADGES.team },
-        { name: 'Strona', href: '/dash/strona', icon: 'fa-window-maximize' },
+        { name: 'Strona klienta', href: '/dash/strona', icon: 'fa-window-maximize' },
         { name: 'Ustawienia', href: '/dash/ustawienia', icon: 'fa-sliders' },
     ];
 
