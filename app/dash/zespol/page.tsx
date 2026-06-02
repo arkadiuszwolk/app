@@ -1,6 +1,12 @@
+/*
+Dodać sliding-tabs: widok biznesowy | widok klienta.
+*/
+
 'use client';
 
 import React, { useState } from 'react';
+import { EmployeeCard } from './components/EmployeeCard';
+import { Card } from './components/Card';
 
 // --- TYPY ---
 type StaffFilter = 'all' | 'active' | 'leave';
@@ -409,6 +415,181 @@ export default function TeamManagementPage() {
                         </div>
                     );
                 })}
+                {/* Pracownik 1: Właściciel z pełnymi danymi i bio */}
+                <EmployeeCard
+                    firstName='Tomasz'
+                    lastName='Nowak'
+                    role='Właściciel / Top Barber'
+                    phone='+48 501 234 567'
+                    email='tomasz.nowak@salon.pl'
+                    bio='Specjalista od klasycznych strzyżeń męskich i tradycyjnego golenia brzytwą. 8 lat doświadczenia.'
+                    todayAppointmentsCount={6}
+                    todayEarnings={780}
+                    isWorkingToday={true}
+                />
+                {/* Pracownik 2: Pracownik z bio */}
+                <EmployeeCard
+                    firstName='Marta'
+                    lastName='Kowalska'
+                    role='Stylistka Fryzur'
+                    phone='+48 602 987 654'
+                    email='marta.kowalska@salon.pl'
+                    bio='Mistrzyni nowoczesnych koloryzacji i awangardowych strzyżeń damskich.'
+                    todayAppointmentsCount={4}
+                    todayEarnings={520}
+                    isWorkingToday={true}
+                />
+                {/* Pracownik 3: Nowy pracownik, który jeszcze nie ma ustawionego opisu Bio */}
+                <EmployeeCard
+                    firstName='Jarek'
+                    lastName='Wiśniewski'
+                    role='Młodszy Barber'
+                    phone='+48 703 111 222'
+                    email='jarek.wisniewski@salon.pl'
+                    // bio pomijamy – komponent obsłuży to bez błędu i nie pokaże dymka
+                    todayAppointmentsCount={2}
+                    todayEarnings={180}
+                    isWorkingToday={false} // Jarek ma dziś wolne – kropka statusu będzie szara/zniknie
+                />
+                {/* */}
+                <div className='border rounded-2xl p-6 shadow-2xl transition-all flex flex-col justify-between relative group overflow-hidden bg-slate-950 border-slate-900 shadow-slate-950/20 text-white'>
+                    {/* Dynamiczne linie tła (Inline SVG - Białe na ciemnym tle) */}
+                    <div
+                        className='absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-[0.08] group-hover:opacity-[0.40]'
+                        style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0 100 C 30 70, 70 30, 100 0 M0 80 C 40 60, 60 40, 100 -20 M-20 100 C 40 40, 40 40, 100 20' fill='none' stroke='%23ffffff' stroke-width='0.4'/%3E%3C/svg%3E")`,
+                            backgroundSize: '200px 200px',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'right -40px bottom -50px',
+                        }}
+                    />
+
+                    {/* Treść karty */}
+                    <div className='z-10 flex flex-col justify-between h-full w-full relative'>
+                        {/* GÓRNY PASEK: ID oraz Status */}
+                        <div className='flex items-center justify-between mb-4'>
+                            <span className='text-[11px] font-bold px-2.5 py-1 rounded-md border bg-slate-900 text-slate-400 border-slate-800'>
+                                #1
+                            </span>
+
+                            <span className='px-2.5 py-1 rounded-md font-bold text-[11px] uppercase border tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/20 flex items-center gap-1.5'>
+                                <span className='relative flex h-2 w-2'>
+                                    <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75'></span>
+                                    <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500'></span>
+                                </span>
+                                W pracy
+                            </span>
+                        </div>
+
+                        {/* ŚRODKOWA SEKCJA: Avatar i Dane podstawowe */}
+                        <div className='flex items-center space-x-5'>
+                            <div className='w-16 h-16 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white text-lg font-black shadow-lg shrink-0 group-hover:scale-105 transition-transform border border-white/5'>
+                                MN
+                            </div>
+                            <div className='min-w-0 flex-1'>
+                                <h3 className='text-base font-extrabold truncate text-white tracking-tight'>
+                                    Michał Nowak
+                                </h3>
+                                <p className='text-sm font-semibold mt-0.5 truncate text-indigo-300'>
+                                    Stylista
+                                </p>
+                                <div className='mt-2.5 space-y-1 text-xs text-slate-300'>
+                                    <p className='flex items-center gap-2.5 truncate'>
+                                        <i className='fa-solid fa-phone text-indigo-400 w-4 text-center'></i>
+                                        <span>+48 502 674 684</span>
+                                    </p>
+                                    <p className='flex items-center gap-2.5 truncate hover:text-indigo-300 transition-colors'>
+                                        <i className='fa-solid fa-envelope text-indigo-400 w-4 text-center'></i>
+                                        <span>m.nowak@gmail.com</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SEKCJA MIKRO-STATYSTYK (POWIĘKSZONE DANE) */}
+                        <div className='mt-6 flex items-center justify-between gap-4'>
+                            {/* Statystyka 1: Wizyty */}
+                            <div className='flex-1 rounded-2xl bg-white/5 border border-white/10 p-4 flex flex-col items-center gap-3'>
+                                <span className='text-[10px] text-slate-400 uppercase tracking-widest font-bold leading-tight text-center'>
+                                    Wykonane
+                                    <br />
+                                    wizyty
+                                </span>
+                                <div className='w-full h-16 rounded-xl flex items-center justify-center border border-indigo-950 shadow-inner'>
+                                    <span className='text-5xl font-black text-amber-500 tracking-tighter'>
+                                        5
+                                    </span>
+                                </div>
+                            </div>
+                            {/* Statystyka 2: Przychód */}
+                            <div className='flex-1 rounded-2xl bg-white/5 border border-white/10 p-4 flex flex-col items-center gap-3'>
+                                <span className='text-[10px] text-slate-400 uppercase tracking-widest font-bold leading-tight text-center'>
+                                    Wygenerowany
+                                    <br />
+                                    przychód
+                                </span>
+                                <div className='w-full h-16 rounded-xl flex items-center justify-center border border-indigo-950 shadow-inner'>
+                                    <span className='text-4xl font-black text-amber-500 tracking-tighter'>
+                                        450 <span className='text-xl font-bold'>PLN</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* DOLNY PASEK: Przyciski akcji (Historia, Edytuj, Usuń) */}
+                        <div className='mt-6 pt-5 flex items-center justify-between border-t border-slate-900'>
+                            <div className='flex items-center space-x-2.5'>
+                                {/* Edytuj */}
+                                <button
+                                    type='button'
+                                    title='Edytuj profil pracownika'
+                                    className='p-2.5 rounded-xl border border-white/5 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-xs font-semibold'>
+                                    <i className='fa-solid fa-pen text-[13px]'></i>
+                                    Edytuj
+                                </button>
+                                {/* Historia */}
+                                <button
+                                    type='button'
+                                    title='Zobacz historię wizyt tego pracownika'
+                                    className='p-2.5 rounded-xl border border-white/5 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-xs font-semibold'>
+                                    <i className='fa-solid fa-clock-rotate-left text-[13px]'></i>
+                                    Historia
+                                </button>
+                                {/* Usuń */}
+                                <button
+                                    type='button'
+                                    title='Usuń pracownika (Wymaga potwierdzenia)'
+                                    className='p-2.5 rounded-xl border border-white/5 bg-slate-900 text-slate-300 hover:bg-red-950 hover:text-red-300 transition-colors cursor-pointer flex items-center gap-2 text-xs font-semibold'>
+                                    <i className='fa-solid fa-trash-can text-[13px]'></i>
+                                    Usuń
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* */}
+                {/* Domyślna pusta karta z plusem do otwierania Drawera */}
+                <div className='w-full max-w-[340px] h-[240px] rounded-2xl border-2 border-dashed border-slate-300 hover:border-[#0B132B] flex flex-col items-center justify-center text-slate-400 hover:text-[#0B132B] transition-all duration-300 cursor-pointer bg-white group shadow-sm hover:shadow-md'>
+                    <div className='w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-[#0B132B]/5 transition-colors duration-300'>
+                        <span className='text-2xl font-light leading-none text-slate-500 group-hover:text-[#0B132B]'>
+                            +
+                        </span>
+                    </div>
+                    <span className='text-xs font-semibold tracking-wide mt-3 uppercase text-slate-400 group-hover:text-[#0B132B]'>
+                        Dodaj pracownika
+                    </span>
+                </div>
+                <Card
+                    employee={{
+                        fullName: 'Anna Kowalska',
+                        position: 'Stylistka',
+                        phone: '+48 512 345 678',
+                        email: 'anna.kowalska@salonbella.pl',
+
+                        visits: 184,
+                        income: 28750,
+                    }}
+                />
             </div>
 
             {/* PUSTY STAN */}

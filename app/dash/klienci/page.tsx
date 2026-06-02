@@ -1,5 +1,6 @@
 'use client';
 
+import { Tabela } from '@/components/Tabela';
 import React, { useState } from 'react';
 
 // --- TYPY ---
@@ -82,7 +83,7 @@ export default function ClientsTablePage() {
     return (
         <div className='space-y-6'>
             {/* ================= 1. NAGŁÓWEK Z AKCJĄ ================= */}
-            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+            {/* <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
                 <div>
                     <h1 className='text-xl font-black tracking-tight text-slate-950 font-sans'>
                         Baza Klientów
@@ -112,11 +113,11 @@ export default function ClientsTablePage() {
                     </svg>
                     <span>Dodaj nowego klienta</span>
                 </button>
-            </div>
+            </div> */}
 
             {/* ================= 2. ANALITYKA BAZY (KOMPAKTOWE KPI) ================= */}
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                {/* Wszystcy klienci */}
+            {/* <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                
                 <div className='bg-[#0b1329] p-4 border border-slate-800/60 rounded-xl shadow-md flex items-center justify-between'>
                     <div>
                         <p className='text-[10px] font-bold text-slate-400 uppercase tracking-wider'>
@@ -131,7 +132,7 @@ export default function ClientsTablePage() {
                     </span>
                 </div>
 
-                {/* LTV */}
+                
                 <div className='bg-[#0b1329] p-4 border border-slate-800/60 rounded-xl shadow-md flex items-center justify-between'>
                     <div>
                         <p className='text-[10px] font-bold text-slate-400 uppercase tracking-wider'>
@@ -146,7 +147,7 @@ export default function ClientsTablePage() {
                     </span>
                 </div>
 
-                {/* Segment VIP */}
+                
                 <div className='bg-[#0b1329] p-4 border border-slate-800/60 rounded-xl shadow-md flex items-center justify-between'>
                     <div>
                         <p className='text-[10px] font-bold text-slate-400 uppercase tracking-wider'>
@@ -161,12 +162,12 @@ export default function ClientsTablePage() {
                         Generują 65% obrotu
                     </span>
                 </div>
-            </div>
+            </div> */}
 
             {/* ================= 3. FILTRY I WYSZUKIWARKA ================= */}
-            <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-white p-3 rounded-xl border border-slate-100 shadow-sm'>
+            {/* <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-white p-3 rounded-xl border border-slate-100 shadow-sm'>
                 <div className='flex flex-wrap items-center gap-2.5'>
-                    {/* Ciemny Segmented Control */}
+                   
                     <div className='bg-slate-950 p-1 rounded-lg inline-flex items-center border border-slate-900'>
                         {(['all', 'premium', 'regular', 'inactive'] as ClientStatus[]).map(
                             (status) => (
@@ -191,7 +192,7 @@ export default function ClientsTablePage() {
                         )}
                     </div>
 
-                    {/* Wyszukiwarka */}
+                  
                     <div className='relative'>
                         <input
                             type='text'
@@ -219,10 +220,10 @@ export default function ClientsTablePage() {
                     Znaleziono:{' '}
                     <strong className='text-slate-900 font-black'>{filteredClients.length}</strong>
                 </span>
-            </div>
+            </div> */}
 
             {/* ================= 4. PREMIUM CIEMNA TABELA KLIENCKA ================= */}
-            <div className='bg-[#0b1329] border border-slate-800/80 rounded-xl shadow-xl overflow-hidden'>
+            {/* <div className='bg-[#0b1329] border border-slate-800/80 rounded-xl shadow-xl overflow-hidden'>
                 <div className='overflow-x-auto'>
                     <table className='w-full text-left border-collapse'>
                         <thead>
@@ -261,14 +262,14 @@ export default function ClientsTablePage() {
                                 <tr
                                     key={client.id}
                                     className='hover:bg-slate-900/40 transition-colors group'>
-                                    {/* ID */}
+                                 
                                     <td className='p-3 text-center'>
                                         <span className='text-[10px] font-bold font-mono text-slate-500 bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800/50'>
                                             {client.id}
                                         </span>
                                     </td>
 
-                                    {/* Profil (Avatar + Nazwisko) */}
+                               
                                     <td className='p-3'>
                                         <div className='flex items-center space-x-3'>
                                             <img
@@ -287,7 +288,6 @@ export default function ClientsTablePage() {
                                         </div>
                                     </td>
 
-                                    {/* Status jako Badge */}
                                     <td className='p-3'>
                                         <span
                                             className={`inline-flex items-center text-[9px] font-black uppercase px-2 py-0.5 rounded-md border ${
@@ -305,34 +305,33 @@ export default function ClientsTablePage() {
                                         </span>
                                     </td>
 
-                                    {/* Telefon */}
                                     <td className='p-3 text-xs font-semibold text-slate-400 font-mono'>
                                         {client.phone}
                                     </td>
 
-                                    {/* Wizyty (Licznik) */}
+                                   
                                     <td className='p-3 text-center text-xs font-bold text-white'>
                                         {client.totalVisits}
                                     </td>
 
-                                    {/* Preferowana usługa */}
+                                   
                                     <td className='p-3 text-xs font-medium text-slate-300'>
                                         <span className='text-amber-400/90 font-semibold'>
                                             {client.preferredService}
                                         </span>
                                     </td>
 
-                                    {/* Łączna kwota wydana */}
+                                 
                                     <td className='p-3 text-right text-xs font-black text-amber-400 font-mono'>
                                         {client.totalSpent}
                                     </td>
 
-                                    {/* Ostatnia wizyta */}
+                               
                                     <td className='p-3 text-right text-xs font-semibold text-slate-400 font-mono'>
                                         {client.lastVisit}
                                     </td>
 
-                                    {/* Przyciski Akcji */}
+                           
                                     <td className='p-3 text-center'>
                                         <div className='flex items-center justify-center space-x-1'>
                                             <button
@@ -377,7 +376,7 @@ export default function ClientsTablePage() {
                     </table>
                 </div>
 
-                {/* BRAK WYNIKÓW FILTROWANIA */}
+                
                 {filteredClients.length === 0 && (
                     <div className='text-center py-12 flex flex-col items-center justify-center border-t border-slate-800/40'>
                         <svg
@@ -402,7 +401,7 @@ export default function ClientsTablePage() {
                     </div>
                 )}
 
-                {/* STOPKA TABELI / STRONICOWANIE */}
+                
                 <div className='p-3 bg-slate-950/40 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400 font-medium'>
                     <span>
                         Pokazujesz 1-{filteredClients.length} z {filteredClients.length} pozycji
@@ -422,7 +421,9 @@ export default function ClientsTablePage() {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> */}
+
+            <Tabela />
         </div>
     );
 }

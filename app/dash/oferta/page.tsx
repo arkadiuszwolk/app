@@ -1,5 +1,6 @@
 'use client';
 
+import { SlidingTabs } from '@/components/sliding-tabs';
 import React, { useState } from 'react';
 
 // --- TYPY ---
@@ -89,6 +90,30 @@ const MOCK_SERVICES = [
         description:
             'Opracowanie skórek i kształtu płytki, nałożenie bazy proteinowej oraz koloru.',
     },
+    {
+        id: 'S-02',
+        name: 'Koloryzacja jednolita',
+        category: 'hair',
+        duration: '120 min',
+        price: '260 zł',
+        isBestseller: false,
+        isOnline: true,
+        imageUrl:
+            'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=600&q=80',
+        description: "Klasyczna koloryzacja całych włosów produktami marki L'Oréal Professionnel.",
+    },
+    {
+        id: 'S-03',
+        name: 'Balayage Premium + Olaplex',
+        category: 'hair',
+        duration: '180 min',
+        price: '450 zł',
+        isBestseller: true,
+        isOnline: true,
+        imageUrl:
+            'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80',
+        description: 'Zaawansowana technika rozjaśniania z pełną ochroną struktury włosa.',
+    },
 ];
 
 // SVG fali dla ciemnych kart usług (miedziany/złoty akcent)
@@ -106,17 +131,11 @@ export default function ServicesPage() {
             {/* ================= 1. NAGŁÓWEK I PRZYCISK DODAWANIA ================= */}
             <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
                 <div>
-                    <h1 className='text-2xl font-black tracking-tight text-slate-950 font-sans'>
-                        Oferta i Cennik usług
-                    </h1>
-                    <p className='text-sm font-medium text-slate-500 mt-1'>
-                        Zarządzaj swoim katalogiem zabiegów, cenami, czasem trwania i widocznością w
-                        systemie.
-                    </p>
+                    <h1 className='text-2xl text-indigo-950 font-sans tracking-tight'>Oferta</h1>
                 </div>
                 <button
                     type='button'
-                    className='inline-flex items-center justify-center space-x-2 bg-slate-900 border border-slate-950 text-white hover:bg-slate-800 text-xs font-bold px-4 py-3 rounded-xl transition-all shadow-md cursor-pointer self-start sm:self-center'>
+                    className='inline-flex items-center justify-center space-x-2 text-white bg-indigo-500 text-xs font-bold px-4 py-3 rounded-full transition-all shadow-md cursor-pointer self-start sm:self-center'>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         width='14'
@@ -232,8 +251,7 @@ export default function ServicesPage() {
             </div>
 
             {/* ================= 3. FILTROWANIE KATEGORII (CIEMNY SEGMENTED CONTROL) ================= */}
-            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-4'>
-                {/* Zmiana tła paska filtrów na pełny dopasowany głęboki grafit/navy */}
+            {/* <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-4'>
                 <div className='bg-slate-950 p-1 rounded-xl inline-flex items-center space-x-0.5 self-start border border-slate-900 shadow-inner'>
                     {(['all', 'hair', 'barber', 'beauty'] as ServiceCategory[]).map((cat) => (
                         <button
@@ -260,14 +278,29 @@ export default function ServicesPage() {
                     <strong className='text-slate-900 font-black'>{filteredServices.length}</strong>{' '}
                     z {MOCK_SERVICES.length} usług
                 </span>
+            </div> */}
+            <div className='w-full flex justify-center space-x-8'>
+                <SlidingTabs
+                    tabs={[
+                        { label: 'Wszystkie', action: () => {} },
+                        { label: 'Promocje', action: () => {} },
+                        { label: 'Hity', action: () => {} },
+                    ]}
+                />
+                <SlidingTabs
+                    tabs={[
+                        { label: 'Ten tydzień', action: () => {} },
+                        { label: 'Ten miesiąc', action: () => {} },
+                        { label: 'Ten kwartał', action: () => {} },
+                    ]}
+                />
             </div>
-
             {/* ================= 4. CIEMNE KARTY USŁUG ZE ZDJĘCIAMI (STYL PREMIUM) ================= */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
                 {filteredServices.map((service) => (
                     <div
                         key={service.id}
-                        className='bg-[#0b1329] border border-slate-800/80 rounded-2xl shadow-xl hover:shadow-2xl hover:border-slate-700 transition-all flex flex-col justify-between group relative overflow-hidden min-h-[380px]'
+                        className='bg-slate-950 hover:border-slate-700 transition-all flex flex-col justify-between group relative overflow-hidden min-h-[380px]'
                         style={{
                             backgroundImage: darkCardWaves,
                             backgroundSize: '160px 160px',
@@ -275,11 +308,11 @@ export default function ServicesPage() {
                             backgroundPosition: 'right 0px bottom 0px',
                         }}>
                         {/* Góra: Zdjęcie i paski statusu */}
-                        <div className='relative w-full h-44 overflow-hidden rounded-t-2xl bg-slate-950 shrink-0'>
+                        <div className='relative p-4 w-full h-44 overflow-hidden bg-slate-950 shrink-0'>
                             <img
                                 src={service.imageUrl}
                                 alt={service.name}
-                                className='w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500'
+                                className='w-full h-full rounded-md object-cover opacity-85 group-hover:scale-105 transition-transform duration-500'
                             />
                             <div className='absolute inset-0 bg-gradient-to-t from-[#0b1329] via-transparent to-transparent opacity-90' />
 
@@ -306,7 +339,7 @@ export default function ServicesPage() {
                         </div>
 
                         {/* Środek: Tytuł i opis */}
-                        <div className='p-5 flex-1 flex flex-col justify-between relative z-10'>
+                        <div className='p-8 flex-1 flex flex-col justify-between relative z-10'>
                             <div>
                                 <h3 className='text-sm font-bold text-white group-hover:text-amber-400 transition-colors line-clamp-1 tracking-wide'>
                                     {service.name}
