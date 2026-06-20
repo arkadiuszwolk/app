@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
     "@material-tailwind/react": "^2.1.10",
     "@recharts/devtools": "^0.0.11",
     "@supabase/ssr": "^0.10.3",
@@ -23,6 +24,7 @@
     "react-phone-number-input": "^3.4.16",
     "recharts": "^3.8.0",
     "tailwind-merge": "^3.4.0",
+    "zod": "^4.4.3",
     "zustand": "^5.0.13"
   },
   "devDependencies": {

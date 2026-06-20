@@ -68,6 +68,21 @@ const MOCK_CLIENTS = [
     },
 ];
 
+function BlueprintPattern() {
+    // Zakodowany wektorowo idealny pasek 1px w odstępach co 12px
+    const svgPattern = `"data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-3,3 l6,-6 M0,12 l12,-12 M9,15 l6,-6' stroke='%23e2e8f0' stroke-width='1'/%3E%3C/svg%3E"`;
+
+    return (
+        <div
+            className='w-full h-40 border-r border-slate-400/20'
+            style={{
+                backgroundImage: `url(${svgPattern})`,
+                opacity: 2,
+            }}
+        />
+    );
+}
+
 export default function ClientsTablePage() {
     const [activeStatus, setActiveStatus] = useState<ClientStatus>('all');
     const [searchQuery, setSearchQuery] = useState('');
@@ -424,6 +439,7 @@ export default function ClientsTablePage() {
             </div> */}
 
             <Tabela />
+            <BlueprintPattern />
         </div>
     );
 }
