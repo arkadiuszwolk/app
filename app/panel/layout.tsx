@@ -26,17 +26,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <div className='h-screen w-60 bg-gray-50'>
                         <nav className='w-full'>
                             {[
-                                'Dzisiaj',
-                                'Wizyty',
-                                'Klienci',
-                                'Zespół',
-                                'Oferta',
-                                'Strona klienta',
-                                'Ustawienia',
-                            ].map((label, i) => (
+                                { label: 'Dzisiaj', href: '' },
+                                { label: 'Wizyty', href: '' },
+                                { label: 'Klienci', href: '/panel/customers' },
+                                { label: 'Zespół', href: '/panel/team' },
+                                { label: 'Oferta', href: '/panel/services' },
+                                { label: 'Strona klienta', href: '' },
+                                { label: 'Ustawienia', href: '/panel/settings' },
+                            ].map(({ label, href }, i) => (
                                 <Link
                                     key={i}
-                                    href='/panel'
+                                    href={href}
                                     className='flex w-full px-4 py-2 hover:bg-white'>
                                     {label}
                                 </Link>

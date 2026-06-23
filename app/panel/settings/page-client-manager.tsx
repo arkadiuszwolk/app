@@ -5,6 +5,7 @@ import { CompanyDayOffsType, CompanyHoursType } from './schema';
 import { Drawer } from '@/components/Drawer';
 import { CompanyHoursForm } from './company-hours-form';
 import { CompanyDayOffsForm } from './company_day_offs_form';
+import { logoutAction } from './actions';
 
 type PCMProps = {
     companyId: string;
@@ -104,6 +105,11 @@ export function PageClientManager({ companyId, companyHours, companyDayOffs }: P
                 onClick={openNewCompanyDayOffDrawer}
                 className='hover:cursor-pointer hover:text-gray-600'>
                 Dodaj dzień nieczynny
+            </button>
+            <button
+                onClick={logoutAction}
+                className='block hover:cursor-pointer hover:text-gray-600'>
+                Wyloguj
             </button>
             <Drawer isOpen={drawer !== null} onClose={closeDrawer}>
                 <h2>{companyId}</h2>

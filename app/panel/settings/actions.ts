@@ -8,6 +8,7 @@ import {
     companyHoursSchema,
     CompanyHoursType,
 } from './schema';
+import { redirect } from 'next/navigation';
 
 // Obiekt reprezentujący wybrany rekord z tabeli company_hours
 export async function getCompanyHoursForDayAction(companyId: string, dayOfWeek: number) {
@@ -75,4 +76,10 @@ export async function saveCompanyDayOffAction(formData: CompanyDayOffsType) {
 
     revalidatePath('/panel/settings');
     return { success: true };
+}
+
+export async function logoutAction() {
+    const supabase = await createClient();
+    supabase.auth.signOut();
+    redirect('/login');
 }
