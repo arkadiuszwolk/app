@@ -32,7 +32,7 @@ export function ServiceForm({ companyId, service, onSuccess }: SFType) {
         },
     });
 
-    async function onSubmit(data: ServiceType) {
+    async function onSubmit(data: AddServiceType) {
         const result = await saveServiceAction(data);
         if (result.success) onSuccess();
     }

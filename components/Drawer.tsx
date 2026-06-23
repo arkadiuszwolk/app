@@ -25,7 +25,7 @@ export function Drawer({ isOpen, onClose, children }: DrawerProps) {
 
                     {/* Drawer */}
                     <motion.div
-                        className='fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 p-6'
+                        className='fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 p-6 overflow-y-scroll'
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
