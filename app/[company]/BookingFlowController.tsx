@@ -19,11 +19,16 @@ interface Service {
 }
 
 interface BookingFlowControllerProps {
-    company: { id: string; company_name: string; slug: string; capacity: number };
+    company: { id: string; name: string; slug: string };
     services: Service[];
+    availableSlots: Record<string, { time: string; display: string }[]>;
 }
 
-export function BookingFlowController({ company, services }: BookingFlowControllerProps) {
+export function BookingFlowController({
+    company,
+    services,
+    availableSlots,
+}: BookingFlowControllerProps) {
     // Inicjalizujemy krok początkowy bezpośrednio z funkcji sprawdzającej URL
     const [step, setStep] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -128,7 +133,12 @@ export function BookingFlowController({ company, services }: BookingFlowControll
                                 />
                             )}
                             {step === 2 && <DatePickerView nextStep={nextStep} />}
-                            {step === 3 && <TimePickerView nextStep={nextStep} />}
+                            {step === 3 && (
+                                <TimePickerView
+                                    nextStep={nextStep}
+                                    availableSlot={availableSlots}
+                                />
+                            )}
                             {step === 4 && <FormView nextStep={nextStep} />}
                             {step === 5 && <SuccessView />}
                         </div>

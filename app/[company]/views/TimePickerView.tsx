@@ -2,31 +2,47 @@
 
 import { useBookingStore } from '@/store/useBookingStore';
 import { useEffect, useState } from 'react';
-import { getAvailableSlots } from '../../dashboard/owner/actions'; // Sprawdź czy ścieżka do Twojego pliku actions się zgadza
+// import { getAvailableSlots } from '../../dashboard/owner/actions'; // Sprawdź czy ścieżka do Twojego pliku actions się zgadza
 
-export function TimePickerView({ nextStep }: { nextStep: () => void }) {
+export function TimePickerView({
+    nextStep,
+    availableSlot,
+}: {
+    nextStep: () => void;
+    availableSlot: Record<string, { time: string; display: string }[]>;
+}) {
     const { setTime, date, service, companyId } = useBookingStore();
     const [availableSlots, setAvailableSlots] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        async function loadSlots() {
-            // Jeśli nie mamy kompletu danych w sklepie, nie pytamy bazy
-            if (!companyId || !service || !date) return;
+    // useEffect(() => {
+    //     async function loadSlots() {
+    //         // Jeśli nie mamy kompletu danych w sklepie, nie pytamy bazy
+    //         if (!companyId || !service || !date) return;
 
-            setIsLoading(true);
-            try {
-                // Wywołujemy naszą bezpieczną akcję serwerową
-                const slots = await getAvailableSlots(companyId, service.id, date);
-                setAvailableSlots(slots);
-            } catch (error) {
-                console.error('Błąd podczas pobierania wolnych terminów:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-        loadSlots();
-    }, [companyId, service, date]);
+    //         setIsLoading(true);
+    //         try {
+    //             // Wywołujemy naszą bezpieczną akcję serwerową
+    //             const slots = await getAvailableSlots(companyId, service.id, date);
+    //             setAvailableSlots(slots);
+    //         } catch (error) {
+    //             console.error('Błąd podczas pobierania wolnych terminów:', error);
+    //         } finally {
+    //             setIsLoading(false);
+    //         }
+    //     }
+    //     loadSlots();
+    // }, [companyId, service, date]);
+    console.log('****************************************');
+    console.log(String(date).split('.'));
+    if (date !== undefined) {
+        const [day, month, year] = String(date).split('.');
+        const dateStr = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        console.log(dateStr);
+        console.log('--------------------------');
+        console.log(availableSlot[dateStr].map((x) => x.display));
+    }
+    console.log('****************************************');
 
     const handleSelect = (h: string) => {
         setTime(h); // Zapisujemy wybraną godzinę w Zustandzie

@@ -53,7 +53,7 @@ const Checkbox: FC<CheckboxProps> = ({ label, checked = false, onChange, require
             </div>
 
             {/* Label */}
-            <span className='ml-2 text-sm'>
+            <span className='ml-1 text-sm'>
                 {label}
                 {required && <span className='text-red-600'>*</span>}
             </span>

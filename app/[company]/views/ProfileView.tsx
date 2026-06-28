@@ -8,7 +8,7 @@ interface Service {
 }
 
 interface ProfileViewProps {
-    company: { company_name: string; slug: string };
+    company: { name: string; slug: string };
     services: Service[];
     onSelectService: (service: Service) => void; // Dodany callback dla kontrolera
 }
@@ -20,11 +20,11 @@ export default function ProfileView({ company, services, onSelectService }: Prof
             <header className='p-6 border-b border-gray-100 space-y-4 w-full'>
                 <div className='flex items-center space-x-5'>
                     <div className='w-16 h-16 bg-linear-to-tr from-gray-900 to-gray-700 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-sm shrink-0'>
-                        {company.company_name.charAt(0).toUpperCase()}
+                        {company.name.charAt(0).toUpperCase()}
                     </div>
                     <div className='space-y-0.5'>
                         <h1 className='text-lg font-bold tracking-tight text-gray-900'>
-                            {company.company_name}
+                            {company.name}
                         </h1>
                         <p className='text-xs text-gray-400 font-medium'>
                             minical.pl/{company.slug}
@@ -49,7 +49,7 @@ export default function ProfileView({ company, services, onSelectService }: Prof
                 </div>
 
                 <a
-                    href={`https://maps.google.com/?q=${encodeURIComponent(company.company_name)}`}
+                    href={`https://maps.google.com/?q=${encodeURIComponent(company.name)}`}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='block p-3 bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl transition-all group active:scale-[0.99]'>

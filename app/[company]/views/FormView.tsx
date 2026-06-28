@@ -3,7 +3,7 @@
 import { useBookingStore } from '@/store/useBookingStore';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { createAppointment } from '../../dashboard/owner/actions'; // Sprawdź poprawność ścieżki do actions.ts
+// import { createAppointment } from '../../dashboard/owner/actions'; // Sprawdź poprawność ścieżki do actions.ts
 
 interface BookingFormData {
     fullName: string;
@@ -35,32 +35,32 @@ export function FormView({ nextStep }: { nextStep: () => void }) {
         setIsSubmitting(true);
         setSubmitError(null);
 
-        try {
-            // Wywołujemy akcję serwerową zapisu do Supabase
-            const result = await createAppointment({
-                companyId,
-                serviceId: service.id,
-                customerName: data.fullName,
-                customerPhone: data.phone,
-                dateStr: date,
-                timeStr: time,
-            });
+        // try {
+        //     // Wywołujemy akcję serwerową zapisu do Supabase
+        //     const result = await createAppointment({
+        //         companyId,
+        //         serviceId: service.id,
+        //         customerName: data.fullName,
+        //         customerPhone: data.phone,
+        //         dateStr: date,
+        //         timeStr: time,
+        //     });
 
-            if (result?.success) {
-                // Zapisujemy dane klienta w storze (żeby SuccessView mógł je ładnie wyświetlić)
-                setCustomer(data.fullName, data.phone);
-                // Przechodzimy do SuccessView
-                nextStep();
-            } else {
-                // Obsługa błędu współbieżności (np. ktoś zajął termin przed chwilą)
-                setSubmitError(result?.error || 'Wystąpił nieoczekiwany błąd podczas zapisu.');
-            }
-        } catch (error: any) {
-            console.error('Błąd zapisu rezerwacji:', error);
-            setSubmitError(error?.message || 'Błąd połączenia z serwerem. Spróbuj ponownie.');
-        } finally {
-            setIsSubmitting(false);
-        }
+        //     if (result?.success) {
+        //         // Zapisujemy dane klienta w storze (żeby SuccessView mógł je ładnie wyświetlić)
+        //         setCustomer(data.fullName, data.phone);
+        //         // Przechodzimy do SuccessView
+        //         nextStep();
+        //     } else {
+        //         // Obsługa błędu współbieżności (np. ktoś zajął termin przed chwilą)
+        //         setSubmitError(result?.error || 'Wystąpił nieoczekiwany błąd podczas zapisu.');
+        //     }
+        // } catch (error: any) {
+        //     console.error('Błąd zapisu rezerwacji:', error);
+        //     setSubmitError(error?.message || 'Błąd połączenia z serwerem. Spróbuj ponownie.');
+        // } finally {
+        //     setIsSubmitting(false);
+        // }
     };
 
     return (
